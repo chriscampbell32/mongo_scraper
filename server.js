@@ -20,7 +20,15 @@ app.use(bodyParser.urlencoded({
 app.use(express.static('public'));
 
 ///////CONNECT TO THE DATABASE//////
+mongoose.connect("mongodb://localhost/scraper");
+var db = mongoose.connection;
 
+db.on('error', function(err){
+    console.log('Mongoose error: ', err);
+});
+db.once('open', function(){
+    console.log('Mongoose connected :)');
+});
 
 
 
