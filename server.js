@@ -38,8 +38,33 @@ var Article = require('./models/articleModel.js');
 
 //routes
 app.get('/', function(req, res){
-    res.send('index.html');
-})
+    //scrape reddit
+    request('https://news.ycombinator.com/', function(error, response, html){
+        var $ = cheerio.load(html);
+        $("td.title:nth-child(3)>a").each(function(i, element){
+            var articleTitle = $(element).tex();
+            var articleLink = $(element).attr('href');
+
+            //create new instance
+            var insertedArticle = new Article({
+                title: articleTitle,
+                link: articleLink
+            });
+            //save to database
+            insertedArticle.save(function(err, dbArticle){
+                if(err){
+                    console.log(err);
+
+                }else {
+                    console.log(dbArticle);
+                }
+            });
+            res.sendFile(process.cwd() + '/index.html')
+        });
+
+        });
+    });
+
 
 
 
