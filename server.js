@@ -13,11 +13,11 @@ var PORT = process.env.PORT || 8080;
 app.engine('handlebars', expressHandlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-//logger
-app.use(logger('dev'));
+//middleware
 app.use(bodyParser.urlencoded({
     extended:false
 }));
+app.use(express.static('public'));
 
 ///////CONNECT TO THE DATABASE//////
 
@@ -27,6 +27,11 @@ app.use(bodyParser.urlencoded({
 //require schema
 var Note = require('./models/noteModel.js');
 var Article = require('./models/articleModel.js');
+
+//routes
+app.get('/', function(req, res){
+    res.send('index.html');
+})
 
 
 
