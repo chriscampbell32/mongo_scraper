@@ -65,6 +65,16 @@ app.get('/', function(req, res){
         });
     });
 
+app.get('/displayInfo', function(req, res){
+    Article.find({}, function(err, articleData){
+        if(err){
+            throw err;
+        }
+
+        res.json(articleData);
+    })
+});
+
 
 
 
